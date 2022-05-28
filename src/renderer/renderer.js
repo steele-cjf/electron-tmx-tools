@@ -6,6 +6,10 @@ const $ = require('jquery')
 const jQuery  = $ // 必须执行，bootstrap限制
 require('bootstrap')// 为了modal框
 const { exec } = require('child_process');
+const iconv = require('iconv-lite');
+const encoding = 'cp936';
+const binaryEncoding = 'binary';
+const sleepTime = 10
 
 var obj = {
   timerObj:null,
@@ -29,31 +33,34 @@ var obj = {
   clickInit() {
     // 卡片模块列表点击事件
     $('.module-box').on('click', function(e) {
+      
       var key = e.currentTarget.dataset.key
+      var card = cardList.find((item) => item.key === key)
       switch (key) {
+        case 'device':
+          // debugger
+          break;
         case 'back':
+          obj.windowCommond(card.command)
           break;
+        case 'logoff':
         case 'reboot':
-          obj.showModal(key)
-          break;
         case 'shutdown':
-          obj.showModal(key)
-          break;
         case 'sleep':
+          obj.showModal(key)
           break;
         default:
           break;
       }
     })
-    // 模态框弹出事件
+    // 模态框弹出监听事件
     $('#myModal').on('show.bs.modal', function (e) {
-      var num = 6
-
       clearTimeout(obj.timerObj)
+      var num = sleepTime
       var title = $('#modalIndex').val()
+      var card = cardList.find((item) => item.key === title)
       $('#secondShow').text(num)
 
-      var card = cardList.find((item) => item.key === title)
       $('#myModalLabel').text(card.title)
       function timeLower() {
         if(num > 0) {
@@ -63,7 +70,7 @@ var obj = {
             timeLower()
           }, 1000)
         } else {
-          obj.windowCommond(card.key, card.command)
+          obj.windowCommond(card.command)
           $('#myModal').modal('hide')
         }
       }
@@ -73,7 +80,12 @@ var obj = {
     $('#okCommond').on('click', function() {
       var title = $('#modalIndex').val()
       var card = cardList.find((item) => item.key === title)
-      obj.windowCommond(card.key, card.command)
+      obj.windowCommond(card.command)
+      $('#myModal').modal('hide')
+    })
+     // 取消执行
+     $('#cancelCommond').on('click', function() {
+      clearTimeout(obj.timerObj)
       $('#myModal').modal('hide')
     })
   },
@@ -85,16 +97,25 @@ var obj = {
     })
   },
   // windows 电脑指令
-  windowCommond(key, command) {
-    var result = exec(command, function(err, stdout, stderr) {
+  windowCommond(command) {
+    // console.log(command)
+    var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
       if(err || stderr) {
-          console.log(key + " failed" + err + stderr);
+        var err =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
+        obj.showWarn('error', err)
       }
     });
     result.stdin.end();
-    result.on('close', function(code) {
-        console.log("key",  code);
-    });
+  },
+  showWarn(type, text) {
+    $('#alermContent').text(text)
+    $('#alert').modal({
+      keyboard: false,
+      backdrop: false
+    })
+    setTimeout(() => {
+      $('#alert').modal('hide')
+    }, 1000)
   }
 }
 obj.init()

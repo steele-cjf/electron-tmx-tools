@@ -33,12 +33,20 @@
                     <p class="modal-content-description">秒后执行，点击取消按钮可中断</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default" id="cancelCommond">取消</button>
                     <button type="button" class="btn btn-primary" id="okCommond">确定</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" id="alert" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="alert alert-danger" role="alert" id="alermContent">...</div>
+          </div>
+        </div>
+      </div>
 <!-- <h1>Hello World!</h1>
     <div id="error"></div>
     <div id="ports"></div>
