@@ -1,0 +1,45 @@
+.header {
+    padding: 15px;
+}
+.header-logo {
+    width: 200px;
+}
+.module-box {
+    width: 200px;
+    cursor: pointer;
+    padding: 5px 10px;
+    float: left;
+    margin: 30px;
+    text-align: left;
+}
+.module-box:hover {
+    background: rgb(240, 228, 228);
+}
+.content {
+    text-align: center;
+}
+.content-box {
+    width: 780px;
+    display: inline-block;
+}
+.media-left.media-middle {
+    height: 71px;
+}
+.media-left-icon {
+    font-size: 45px;
+    color: rgb(30, 134, 237);
+}
+.media-heading {
+    font-weight: bold;
+}
+.description {
+    color: rgba(0,0,0,.3);
+    margin-top: 5px;
+}
+.modal-body {
+    text-align: center;
+}
+.modal-content-title {
+    font-size: 35px;
+    color: red;
+}

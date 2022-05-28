@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thingsmatrix Tools</title>
+    <link rel="stylesheet" href="./lib/normalize.css">
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/iconfont.css">
+    <link rel="stylesheet" href="./assets/css/index.css">
+</head>
+
+<body>
+    <div class="header">
+        <image class="header-logo" src='./assets/img/company-logo.png'/>
+    </div>
+    <div class="content">
+        <div class="content-box" id="contentBox">
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <input id="modalIndex" type="hidden"/>
+                    <h4 class="modal-title"><span id="myModalLabel"></span>倒计时</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-content-title" id="secondShow">6</p>
+                    <p class="modal-content-description">秒后执行，点击取消按钮可中断</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="okCommond">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- <h1>Hello World!</h1>
+    <div id="error"></div>
+    <div id="ports"></div>
+    <button id="connectBtn">connect COM10</button>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default">Left</button>
+        <button type="button" class="btn btn-default">Middle</button>
+        <button type="button" class="btn btn-default">Right</button>
+      </div> -->
+</body>
+
+<script src="./config/render.js"></script>
+<script src="./renderer/renderer.js"></script>
+
+</html>

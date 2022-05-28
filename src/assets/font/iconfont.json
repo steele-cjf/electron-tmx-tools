@@ -1,0 +1,44 @@
+{
+  "id": "3434494",
+  "name": "electron",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "16220428",
+      "name": "设备信息获取",
+      "font_class": "shebeixinxihuoqu",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "17511742",
+      "name": "restart-fill",
+      "font_class": "restart-fill",
+      "unicode": "e817",
+      "unicode_decimal": 59415
+    },
+    {
+      "icon_id": "1761717",
+      "name": "桌面",
+      "font_class": "zhuomian",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    },
+    {
+      "icon_id": "16204122",
+      "name": "睡眠",
+      "font_class": "shuimian",
+      "unicode": "ea01",
+      "unicode_decimal": 59905
+    },
+    {
+      "icon_id": "29212015",
+      "name": "关机",
+      "font_class": "guanji",
+      "unicode": "e818",
+      "unicode_decimal": 59416
+    }
+  ]
+}

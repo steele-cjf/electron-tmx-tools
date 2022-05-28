@@ -1,10 +1,32 @@
 {
-  "name": "electron-serialport",
+  "name": "thingsmatrix",
   "version": "1.0.2",
   "description": "A minimal Electron application with node serialport",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "product": "electron-builder --win nsis:x64 --dir",
+    "pack-win64-x64-test": "electron-builder --win --x64 --dir",
+    "pack-win64-x64-nsis-test": "electron-builder --win nsis:x64",
+    "pack-win64-x64-product": "electron-builder --win --x64 --dir",
+    "pack-win64-x64-nsis-product": "electron-builder --win nsis:x64"
+  },
+  "build": {
+    "asar": true,
+    "appx": {},
+    "productName": "Thingsmatrix",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "directories": {
+      "buildResources": "assert"
+    }
   },
   "repository": {
     "type": "git",
@@ -20,10 +42,14 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^17.0.0"
+    "cross-env": "^7.0.3",
+    "electron": "^18.2.3",
+    "electron-builder": "^23.0.3"
   },
   "dependencies": {
-    "serialport": "^10.3.0",
-    "tableify": "^1.1.1"
+    "bootstrap": "3.4.1",
+    "child_process": "^1.0.2",
+    "jquery": "^3.6.0",
+    "serialport": "^10.3.0"
   }
 }
