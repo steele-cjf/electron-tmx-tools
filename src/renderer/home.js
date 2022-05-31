@@ -1,3 +1,5 @@
+//渲染进程
+const { dialog, getCurrentWindow } = require('@electron/remote')
 const $ = require('jquery')
 const jQuery  = $ // 必须执行，bootstrap需要
 require('bootstrap')// 引入modal alert等js插件，当前使用的是v3版本
@@ -55,6 +57,12 @@ var Home = {
     },
     // 弹出warning
     showWarn(type, text) {
+        dialog.showMessageBox(getCurrentWindow(), {
+            type:'error',
+            title: `warning`,
+            message: text
+        })
+        return
         $('#alermContent').text(text)
         $('#alert').modal({
             keyboard: false,
@@ -74,13 +82,21 @@ var Home = {
     eventInit() {
         let _this = this
         $('#test').on('click', function() {
-            // _this.dataListener('reboot', 1)
-            dialog.showOpenDialog({
-                properties:["openfile",'multiSelections']
-           }).then((results)=>{
-                console.log(results.filePaths);
-                console.log(results.canceled);
-           })
+            var text = 'reboot'
+            var card = cardList.find((item) => item.key === text)
+
+            dialog.showMessageBox(getCurrentWindow(), {
+                type:'warning',
+                title: `${text} Countdown`,
+                message: `8 seconds later ${text}，Click the Cancel button to interrupt`,
+                buttons:['ok','cancel']
+            }).then((item) => {
+                if (item.response) {// cancel
+                } else {
+                    _this.windowCommond(card.command)
+                }
+            })
+            
         })
          // command模态框弹出监听事件
         $('#commondModal').on('show.bs.modal', function (e) {

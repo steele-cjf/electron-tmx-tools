@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-
+//主进程引入
+require('@electron/remote/main').initialize()
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 function createWindow() {
@@ -12,12 +13,14 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true, // to allow require
             contextIsolation: false, // allow use with Electron 12+
+            enableRemoteModule: true,
             preload: path.join(__dirname, './preload.js')
         }
     })
-
     // and load the index.html of the app.
     mainWindow.loadFile('./src/index.html')
+    // 渲染进程使用弹窗
+    require('@electron/remote/main').enable(mainWindow.webContents)
     
     // Open the DevTools.
     mainWindow.webContents.openDevTools()

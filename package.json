@@ -47,6 +47,7 @@
     "electron-builder": "^23.0.3"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "bootstrap": "3.4.1",
     "bootstrap-table": "^1.20.2",
     "child_process": "^1.0.2",
