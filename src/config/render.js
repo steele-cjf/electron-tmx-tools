@@ -1,6 +1,6 @@
 const cardList =[{
-    title: '查看设备',
-    description: '查看设备消息',
+    title: '设备上报消息',
+    description: '查看设备上报消息',
     icon: 'icon-shebeixinxihuoqu',
     key: 'device'
 },{
@@ -32,7 +32,7 @@ const cardList =[{
     description: '重启计算机',
     icon: 'icon-restart-fill',
     key: 'reboot',
-    command: 'shutdown -r now'
+    command: 'shutdown -r -t 00'
 }]
 module.exports = {
     cardList

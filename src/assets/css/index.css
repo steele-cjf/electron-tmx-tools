@@ -46,3 +46,13 @@
 .alert {
     margin: 0;
 }
+.fixed-table-loading {
+    display: none
+}
+.modal-btn {
+    margin-bottom: 10px;
+}
+.bootstrap-table {
+    height: 300px;
+    overflow: auto;
+}

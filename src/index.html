@@ -20,8 +20,8 @@
     </div>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <!-- commond warning Modal -->
+    <div class="modal fade" id="commondModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -40,6 +40,28 @@
         </div>
     </div>
 
+    <!-- device info Modal -->
+    <div class="modal fade" id="deviceInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <input id="modalIndex" type="hidden"/>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设备上报消息</h4>
+                </div>
+                <div class="modal-body" style="text-align: Left">
+                    <!-- <button type="button" class="btn modal-btn" id="testConnect" >测试连接</button>
+                    <button type="button" class="btn modal-btn" id="refreshConnect" >重新连接</button> -->
+                    <table id="tableContent"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert warn -->
     <div class="modal fade" tabindex="-1" id="alert" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
@@ -59,6 +81,7 @@
 </body>
 
 <script src="./config/render.js"></script>
+<script src="./renderer/port.js"></script>
 <script src="./renderer/renderer.js"></script>
 
 </html>

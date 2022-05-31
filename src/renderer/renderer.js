@@ -1,17 +1,18 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const { SerialPort } = require('serialport')
 const $ = require('jquery')
-const jQuery  = $ // 必须执行，bootstrap限制
-require('bootstrap')// 为了modal框
+const jQuery  = $ // 必须执行，bootstrap需要
+require('bootstrap')// 引入modal alert等js插件，当前使用的是v3版本
+require('bootstrap-table')
+
 const { exec } = require('child_process');
 const iconv = require('iconv-lite');
 const encoding = 'cp936';
 const binaryEncoding = 'binary';
 const sleepTime = 10
 
-var obj = {
+var RenderObj = {
   timerObj:null,
   init() {
     // 根据块渲染列表
@@ -28,34 +29,48 @@ var obj = {
     })
     $('#contentBox').html(dom.join(''))
     this.clickInit()
+    this.PortConnectInit()
+  },
+  // 连接port和初始化table
+  PortConnectInit() {
+    $('#tableContent').bootstrapTable({
+      columns: [{
+        field: 'id',
+        title: '#'
+      }, {
+        field: 'description',
+        title: '接受消息'
+      }]
+    })
+    Port.init() // 接入模块
+
   },
   // 点击事件声明
   clickInit() {
-    // 卡片模块列表点击事件
+    // 卡片列表点击事件
     $('.module-box').on('click', function(e) {
-      
       var key = e.currentTarget.dataset.key
       var card = cardList.find((item) => item.key === key)
       switch (key) {
         case 'device':
-          // debugger
+          RenderObj.deciceOperation()
           break;
         case 'back':
-          obj.windowCommond(card.command)
+          RenderObj.windowCommond(card.command)
           break;
         case 'logoff':
         case 'reboot':
         case 'shutdown':
         case 'sleep':
-          obj.showModal(key)
+          RenderObj.showModal(key)
           break;
         default:
           break;
       }
     })
-    // 模态框弹出监听事件
-    $('#myModal').on('show.bs.modal', function (e) {
-      clearTimeout(obj.timerObj)
+    // command模态框弹出监听事件
+    $('#commondModal').on('show.bs.modal', function (e) {
+      clearTimeout(RenderObj.timerObj)
       var num = sleepTime
       var title = $('#modalIndex').val()
       var card = cardList.find((item) => item.key === title)
@@ -64,49 +79,66 @@ var obj = {
       $('#myModalLabel').text(card.title)
       function timeLower() {
         if(num > 0) {
-          obj.timerObj = setTimeout(() => {
+          RenderObj.timerObj = setTimeout(() => {
             num = num - 1
             $('#secondShow').text(num)
             timeLower()
           }, 1000)
         } else {
-          obj.windowCommond(card.command)
-          $('#myModal').modal('hide')
+          RenderObj.windowCommond(card.command)
+          $('#commondModal').modal('hide')
         }
       }
       timeLower()
+    })
+    // 重新连接
+    $('#refreshConnect').on('click', function() {
+      Port.init()
     })
     // 立即执行
     $('#okCommond').on('click', function() {
       var title = $('#modalIndex').val()
       var card = cardList.find((item) => item.key === title)
-      obj.windowCommond(card.command)
-      $('#myModal').modal('hide')
+      RenderObj.windowCommond(card.command)
+      $('#commondModal').modal('hide')
     })
      // 取消执行
      $('#cancelCommond').on('click', function() {
-      clearTimeout(obj.timerObj)
-      $('#myModal').modal('hide')
+      clearTimeout(RenderObj.timerObj)
+      $('#commondModal').modal('hide')
     })
+    // 测试连接
+    $('#testConnect').on('click', function() {
+      Port.writeCommonCommand({
+        callback: function(err) {
+          if(!err) return
+          RenderObj.showWarn('error', err)
+        }
+      })
+    })
+  },
+  deciceOperation() {
+    $('#deviceInfoModal').modal('show')
   },
   showModal (type) {
     $('#modalIndex').val(type)
-    $('#myModal').modal({
+    $('#commondModal').modal({
       keyboard: false,
       backdrop: 'static'
     })
   },
   // windows 电脑指令
   windowCommond(command) {
-    // console.log(command)
     var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
+      console.log(999, err, stderr, stdout)
       if(err || stderr) {
         var err =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
-        obj.showWarn('error', err)
+        RenderObj.showWarn('error', err)
       }
     });
     result.stdin.end();
   },
+  // 弹出warning
   showWarn(type, text) {
     $('#alermContent').text(text)
     $('#alert').modal({
@@ -116,6 +148,17 @@ var obj = {
     setTimeout(() => {
       $('#alert').modal('hide')
     }, 1000)
+  },
+  // 刷新数据
+  async refreshMessage(data) {
+    // $('.module-box[data-key=back]').trigger('click')
+      $('#tableContent').bootstrapTable('prepend', data)
+  },
+  // 分割字符串
+  SplitFn(length, str) {
+    var reg = new RegExp('[^\n]{1,'+length+'}','g')
+    var res = str.match(reg)
+    return res.join(' ')
   }
 }
-obj.init()
+RenderObj.init()
