@@ -33,6 +33,7 @@ var RenderObj = {
   },
   // 连接port和初始化table
   PortConnectInit() {
+    Port.init() // 接入模块
     $('#tableContent').bootstrapTable({
       columns: [{
         field: 'id',
@@ -42,8 +43,6 @@ var RenderObj = {
         title: '接受消息'
       }]
     })
-    Port.init() // 接入模块
-
   },
   // 点击事件声明
   clickInit() {
@@ -74,8 +73,8 @@ var RenderObj = {
       var num = sleepTime
       var title = $('#modalIndex').val()
       var card = cardList.find((item) => item.key === title)
-      $('#secondShow').text(num)
 
+      $('#secondShow').text(num)
       $('#myModalLabel').text(card.title)
       function timeLower() {
         if(num > 0) {
@@ -151,14 +150,7 @@ var RenderObj = {
   },
   // 刷新数据
   async refreshMessage(data) {
-    // $('.module-box[data-key=back]').trigger('click')
-      $('#tableContent').bootstrapTable('prepend', data)
-  },
-  // 分割字符串
-  SplitFn(length, str) {
-    var reg = new RegExp('[^\n]{1,'+length+'}','g')
-    var res = str.match(reg)
-    return res.join(' ')
+    $('#tableContent').bootstrapTable('prepend', data)
   }
 }
 RenderObj.init()

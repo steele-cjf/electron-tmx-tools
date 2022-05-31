@@ -1,3 +1,7 @@
+body, html {
+    height: 100%;
+    width: 100%;
+}
 .header {
     padding: 15px;
 }
@@ -17,6 +21,7 @@
 }
 .content {
     text-align: center;
+    display: none;
 }
 .content-box {
     width: 780px;
@@ -55,4 +60,15 @@
 .bootstrap-table {
     height: 300px;
     overflow: auto;
+}
+.body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.text-show {
+    flex: 1;
+    overflow: auto;
+    /* background: rgb(223, 172, 172); */
+    padding: 30px 15px;
 }

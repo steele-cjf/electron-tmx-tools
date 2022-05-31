@@ -1,7 +1,7 @@
 const { SerialPort } = require('serialport')
 
 var Port = {
-    // restart 7e 39 70 12 00 00 70 07 00 (72 65 73 74 61 72 74) b5 7f
+    // restart 7e 39 70 12 00 00 70 07 00 72 65 73 74 61 72 74 b5 7f
     // 7e 39 30 09 00 7e 39 30 09 00 60 30 80 7f
     // 7E 39 30 09 00 7E 39 30 09 00 60 30 80 7F
     constCommand: [0x7E,0x39,0x30,0x09,0x00,0x7E,0x39,0x30,0x09,0x00,0x60,0x30,0x80,0x7F],
@@ -15,24 +15,21 @@ var Port = {
         Port.message = []
         let list = await Port.getList()
         list.forEach((item) => {
-            Port.connectPort({path: item.path})
+            this.connectPort({path: item.path})
         })
     },
     getList() {
         return SerialPort.list()
     },
-    async connectPort({path, baudRate = 9600, autoOpen = false, stopBits = 1, parity = 'none', flowControl = false},callback) {
+    // 连接串口
+    async connectPort({path, baudRate = 9600, autoOpen = false, stopBits = 1, parity = 'none', flowControl = false}) {
         let p = await new SerialPort({ path,  baudRate, autoOpen, stopBits, parity, flowControl})
+        let _this = this
         p.open(function(openErr) {
             if(!openErr) {// 开启成功
-                p.on('data', function(data) { // 连接成功并且能发送数据
-                    console.log(data.toString('hex'))
-                    if(RenderObj) {
-                        RenderObj.refreshMessage({
-                            id: Port.format(),
-                            description: data.toString('hex')
-                        })
-                    }
+                p.on('data', function(data) { // 监听读取
+                    // console.log('data', data)
+                    _this.formatData(data) // 格式化数据
                     Port.SerialPortCache = p
                 })
                 p.on('error', function (err) {
@@ -41,13 +38,15 @@ var Port = {
                 p.on('close', function (err) {
                     console.log('close: ', err);
                 })
-                Port.writeCommonCommand({command: Port.constCommand, p})
             }
             return null
         })
         
     },
-    writeCommonCommand({command, p, callback}) {
+    // 写入指令
+    sendCommand({command, p, callback}) {
+        command = this.formatCommand(command)
+        console.log('command', command)
         if(!p) {
             p = Port.SerialPortCache
         }
@@ -62,14 +61,35 @@ var Port = {
             callback && callback(err)
         })
     },
-    format() { 
-        var date = new Date()
-        let year = date.getFullYear()
-        let month = date.getMonth() + 1
-        let day = date.getDate()
-        let hour = date.getHours()
-        let minute = date.getMinutes()
-        let second = date.getSeconds()
-        return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    formatCommand(code) {
+        return code && code.split(' ').map((item) => '0x' + item)
+    }, 
+    formatData(data) {
+        // 业务定制化处理
+        let str = data.toString('hex').toLowerCase().split('7e')// Start(2)
+        let s = str[str.length - 1].trim() // 防止重复返回7e
+        if(s && s.length > 12) {
+            s = Port.SplitFn(2, s).split(' ')  // 分割成xx xx xx xx
+            let startCode = '7e',
+            addressCode = s[0],
+            controlCode = s[1],
+            dataLength = s[3] + s[2],
+            commandId = s[5] + s[4],
+            payloadLen = s[7] + s[6];
+            if (commandCf[controlCode] && commandCf[controlCode][commandId] === 'transparent') {
+                let len = parseInt(payloadLen, 16)
+                let result = s.slice(8, len)
+                let key = result.join('')
+                console.log('Transparent data: ', result, hexCf[key])
+                Home.dataListener('Transparent data：'+ (hexCf[key] || key || 'no data'), 1)
+            }
+        }
+    },
+    
+    // 分割字符串
+    SplitFn(length, str) {
+      var reg = new RegExp('[^\n]{1,'+length+'}','g')
+      var res = str.match(reg)
+      return res.join(' ')
     }
 }

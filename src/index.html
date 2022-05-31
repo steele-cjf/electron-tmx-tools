@@ -11,13 +11,18 @@
 </head>
 
 <body>
-    <div class="header">
-        <image class="header-logo" src='./assets/img/company-logo.png'/>
+    <div class="body">
+        <div class="header">
+            <image class="header-logo" src='./assets/img/company-logo.png'/>
+            <button id="test">test</button>
+        </div>
+        <div id="textShow" class="text-show"></div>
     </div>
-    <div class="content">
+
+    <!-- <div class="content">
         <div class="content-box" id="contentBox">
         </div>
-    </div>
+    </div> -->
 
 
     <!-- commond warning Modal -->
@@ -26,15 +31,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <input id="modalIndex" type="hidden"/>
-                    <h4 class="modal-title"><span id="myModalLabel"></span>倒计时</h4>
+                    <h4 class="modal-title"><span id="myModalLabel"></span> Countdown</h4>
                 </div>
                 <div class="modal-body">
                     <p class="modal-content-title" id="secondShow">6</p>
-                    <p class="modal-content-description">秒后执行，点击取消按钮可中断</p>
+                    <p class="modal-content-description">seconds later，Click the Cancel button to interrupt</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="cancelCommond">取消</button>
-                    <button type="button" class="btn btn-primary" id="okCommond">确定</button>
+                    <button type="button" class="btn btn-default" id="cancelCommond">cancel</button>
+                    <button type="button" class="btn btn-primary" id="okCommond">comfirm</button>
                 </div>
             </div>
         </div>
@@ -55,7 +60,7 @@
                     <table id="tableContent"></table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
                 </div>
             </div>
         </div>
@@ -82,6 +87,7 @@
 
 <script src="./config/render.js"></script>
 <script src="./renderer/port.js"></script>
-<script src="./renderer/renderer.js"></script>
+<!-- <script src="./renderer/renderer.js"></script> -->
+<script src="./renderer/home.js"></script>
 
 </html>
