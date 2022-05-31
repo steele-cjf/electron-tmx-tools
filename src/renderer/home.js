@@ -14,10 +14,9 @@ var Home = {
     timerObj:null,
     init() {
         let _this = this
+        _this.appendText('welcome to thingsmatrix ')
         _this.eventInit()
         Port.init()
-        Port.sendCommand({command: '7E 39 30 09 00 7E 39 30 09 00 60 30 80 7F'})
-        _this.appendText('welcome to thingsmatrix')
     },
     appendText(type, text) {
         var dom = getDomTel(type, text)

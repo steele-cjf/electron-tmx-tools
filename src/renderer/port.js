@@ -6,13 +6,12 @@ var Port = {
     // 7E 39 30 09 00 7E 39 30 09 00 60 30 80 7F
     constCommand: [0x7E,0x39,0x30,0x09,0x00,0x7E,0x39,0x30,0x09,0x00,0x60,0x30,0x80,0x7F],
     SerialPortCache: null,
-    message: [],
+    checkConnect: false,
     async init() {
         if( Port.SerialPortCache) {
             await Port.SerialPortCache.close()
         }
         Port.SerialPortCache = null
-        Port.message = []
         let list = await Port.getList()
         list.forEach((item) => {
             this.connectPort({path: item.path})
@@ -29,8 +28,14 @@ var Port = {
             if(!openErr) {// 开启成功
                 p.on('data', function(data) { // 监听读取
                     // console.log('data', data)
-                    _this.formatData(data) // 格式化数据
                     Port.SerialPortCache = p
+                    if(!Port.checkConnect) {
+                        Home.dataListener('Connect '+ path + ' success', 1)
+                        Port.checkConnect = true
+                        return
+                    }
+                    _this.formatData(data) // 格式化数据
+                    
                 })
                 p.on('error', function (err) {
                     console.log('Error: ', err);
@@ -38,13 +43,14 @@ var Port = {
                 p.on('close', function (err) {
                     console.log('close: ', err);
                 })
+                p.write(Port.constCommand, 'hex')// 检验是否能写数据
             }
             return null
         })
         
     },
     // 写入指令
-    sendCommand({command, p, callback}) {
+    sendCommand({command, p}, callback) {
         command = this.formatCommand(command)
         console.log('command', command)
         if(!p) {

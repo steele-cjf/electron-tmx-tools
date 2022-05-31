@@ -70,5 +70,6 @@ body, html {
     flex: 1;
     overflow: auto;
     /* background: rgb(223, 172, 172); */
+    font-size: 20px;
     padding: 30px 15px;
 }
