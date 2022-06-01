@@ -7,43 +7,38 @@ const { createWindowFn } = require('./src/tools')
 function createWindow() {
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
     // Create the browser window.
+    let display = screen.getPrimaryDisplay().workAreaSize;
+    let preloadPath = path.join(__dirname, './preload.js')
+    let htmlPath = path.join(__dirname, './src/index.html')
+    // const mainWindow = createWindowFn(htmlPath, preloadPath, {
+    //     // frame: false,
+    //     alwaysOnTop: true,
+    //     // autoHideMenuBar: true,
+    //     x: display.width - 305,      
+    //     y: display.height - 158
+    // })
+    const offset = 15
+    const width = 290
+    const height = 150
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 400,
-        // resizable: false,
-        backgroundColor: "#ccc",
+        width,
+        height,
+        // frame: false,
+        autoHideMenuBar: true,
+        resizable: false,
+        movable: false,
+        // alwaysOnTop: true,
+        x: display.width - width - offset,      
+        y: display.height - height - offset,
+        show: true,
         webPreferences: {
             nodeIntegration: true, // to allow require
             contextIsolation: false, // allow use with Electron 12+
             enableRemoteModule: true,
-            preload: path.join(__dirname, './preload.js')
+            preload: preloadPath,
+            devTools: false,
         }
     })
-    let display = screen.getPrimaryDisplay().workAreaSize;
-    let preloadPath = path.join(__dirname, './preload.js')
-    let htmlPath = path.join(__dirname, './src/index.html')
-    // const offset = 15
-    // const width = 290
-    // const height = 150
-    // const mainWindow = new BrowserWindow({
-    //     width,
-    //     height,
-    //     // frame: false,
-    //     autoHideMenuBar: true,
-    //     resizable: false,
-    //     movable: false,
-    //     alwaysOnTop: true,
-    //     x: display.width - width - offset,      
-    //     y: display.height - height - offset,
-    //     show: true,
-    //     webPreferences: {
-    //         nodeIntegration: true, // to allow require
-    //         contextIsolation: false, // allow use with Electron 12+
-    //         enableRemoteModule: true,
-    //         preload: preloadPath,
-    //         devTools: false,
-    //     }
-    // })
     mainWindow.loadFile(htmlPath)
 
     // 右下角按鈕
@@ -74,7 +69,7 @@ function createWindow() {
         });
     }
     initTrayIcon()
-     // 触发关闭时触发
+    //  触发关闭时触发
      mainWindow.on('close', (event) => {
         // 截获 close 默认行为
         event.preventDefault();
@@ -100,9 +95,7 @@ app.whenReady().then(() => {
     createWindow()
     //主进程接受事件
     ipcMain.on('commandData', (event, arg) => {
-        console.log(arg, newWindowCheck)
         if(newWindowCheck) return
-        console.log('show modal')
         newWindowCheck = true
         let display = screen.getPrimaryDisplay().workAreaSize;
         let preloadPath = path.join(__dirname, './src/renderer/notification/preload.js')

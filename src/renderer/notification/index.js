@@ -28,6 +28,7 @@ var notification = {
     },
     timeLower(card) {
         var num = sleepTime
+        $('#command').text(card.key)
         var fn = function() {
             if(num > 0) {
                 notification.timerObj = setTimeout(() => {
@@ -46,9 +47,12 @@ var notification = {
         var result = exec('command',  { encoding: binaryEncoding }, function(err, stdout, stderr) {
             if(err || stderr) {
                 var title =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
-                $('#erroBox').text(title || err)
                 $('#contentBox').hide()
-                $('#errorBody').fadeIn()
+                $('#errorBody').css('display', 'flex')
+                $('#erroBox').text(title || err)
+                setTimeout(() => {
+                    getCurrentWindow().close()
+                }, 5000)
             } else {
                 setTimeout(() => {
                     getCurrentWindow().close()

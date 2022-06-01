@@ -1,0 +1,26 @@
+html,body {
+    height: 100%;
+    width: 100%;
+}
+.body-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+.description {
+    color: rgba(0,0,0,.3);
+    margin-top: 5px;
+}
+.box {
+    text-align: center;
+}
+.title {
+    font-size: 35px;
+    color: red;
+}
+.error-body {
+    display: none;
+}
