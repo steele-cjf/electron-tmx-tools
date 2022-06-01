@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../lib/normalize.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
+    <title>Thingsmatrix</title>
+</head>
+<style>
+    html,body {
+        height: 100%;
+        width: 100%;
+    }
+    .body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+    }
+    .description {
+        color: rgba(0,0,0,.3);
+        margin-top: 5px;
+    }
+    .box {
+        text-align: center;
+    }
+    .title {
+        font-size: 35px;
+        color: red;
+    }
+    .error-body {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="body" id="contentBox">
+        <div class="box">
+            <p class="title" id="secondShow">10</p>
+            <p class="description">seconds later to execute</p>
+            <p class="description" id="command"></p>
+        </div>
+        <div>
+            <button  type="button" class="btn btn-default" id="cacelBtn">cancel</button>
+            <button type="button" class="btn btn-primary" id="okBtn">comfirm</button>
+        </div>
+    </div>
+    <div class="body error-body" id="errorBody">
+        <div class="box">
+            <p id="erroBox" class="description" style="color:red"></p>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" id="errorBtn">comfirm</button>
+        </div>
+    </div>
+</body>
+<script src="./index.js"></script>
+
+</html>

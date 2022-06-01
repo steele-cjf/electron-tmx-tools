@@ -129,7 +129,6 @@ var RenderObj = {
   // windows 电脑指令
   windowCommond(command) {
     var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
-      console.log(999, err, stderr, stdout)
       if(err || stderr) {
         var err =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
         RenderObj.showWarn('error', err)
