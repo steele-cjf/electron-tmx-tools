@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron')
+const { BrowserWindow, screen } = require('electron')
 
 const createWindowFn = function(htmlPath, preloadPath, { 
     width = 290,
@@ -12,7 +12,10 @@ const createWindowFn = function(htmlPath, preloadPath, {
     closeCallback,
     readyCallback
 }) {
-    
+    let display = screen.getPrimaryDisplay().workAreaSize;
+    let w = display.width
+    let t = (w - x)/100
+
     const newWindow = new BrowserWindow({
         width,
         height,
@@ -20,7 +23,7 @@ const createWindowFn = function(htmlPath, preloadPath, {
         resizable,
         movable,
         alwaysOnTop,
-        x,      
+        w,
         y,
         webPreferences: {
             nodeIntegration: true, // to allow require
@@ -30,6 +33,21 @@ const createWindowFn = function(htmlPath, preloadPath, {
             devTools: false,
         }
     })
+    var _cache = setInterval(() => {
+        if(w - t < x) clearInterval(_cache)
+        w =Math.floor( w - t )
+        try {
+            newWindow.setBounds({
+                x: w,
+                width,
+                y
+            })
+        } catch(e) {
+            console.log(e)
+        }
+        
+    }, 1)
+    
 
     
     newWindow.loadFile(htmlPath)

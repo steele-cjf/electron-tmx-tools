@@ -97,15 +97,18 @@ app.whenReady().then(() => {
     ipcMain.on('commandData', (event, arg) => {
         if(newWindowCheck) return
         newWindowCheck = true
+        setTimeout(() => {
+            newWindowCheck = false
+        }, 8000)
         let display = screen.getPrimaryDisplay().workAreaSize;
         let preloadPath = path.join(__dirname, './src/renderer/notification/preload.js')
         let htmlPath = path.join(__dirname, './src/renderer/notification/index.html')
         var newWindow = createWindowFn(htmlPath, preloadPath, {
             x: display.width - 305,      
             y: display.height - 158,
-            closeCallback: function(){
-                newWindowCheck = false
-            },
+            // closeCallback: function(){
+            //     newWindowCheck = false
+            // },
             readyCallback: function() {
                 newWindow.webContents.send('replyChildToMain', arg)
             }
