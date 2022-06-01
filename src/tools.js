@@ -25,6 +25,8 @@ const createWindowFn = function(htmlPath, preloadPath, {
         alwaysOnTop,
         w,
         y,
+        // background,
+        transparent: true,
         webPreferences: {
             nodeIntegration: true, // to allow require
             contextIsolation: false, // allow use with Electron 12+

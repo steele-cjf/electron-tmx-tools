@@ -1,17 +1,21 @@
 html,body {
     height: 100%;
     width: 100%;
+    background: transparent;
 }
 .body-wrapper {
+    background: rgb(125, 118, 118);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+    border-radius: 15px;
 }
 .description {
-    color: rgba(0,0,0,.3);
+    color: #fff;
+    font-size: 16px;
     margin-top: 5px;
 }
 .box {
