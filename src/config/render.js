@@ -7,7 +7,7 @@ const cardList =[{
     title: '回到桌面',
     description: '返回桌面',
     icon: 'icon-zhuomian',
-    key: 'back',
+    key: 'desktop',
     command: 'explorer.exe shell:::{3080F90D-D7AD-11D9-BD98-0000947B0257}'
 }, {
     title: '注销',
@@ -50,8 +50,8 @@ const getDomTel = function(text, type) {
     let date = formatTime()
     let domList = {
         0: `<p><span class='desc'></span>${text || '未知消息'}</p>`,
-        1: `<p><span class='desc'>[${date}]  send-></span>${text || '未知消息'}</p>`,
-        2: `<p><span class='desc'>[${date}]  return<-</span>${text || '未知消息'}</p>`,
+        1: `<p><span class='desc'>[${date}] </span>${text || '未知消息'}</p>`,
+        2: `<p><span class='desc'>[${date}] get message:</span>${text || '未知消息'}</p>`,
         400: `<p class='error-content'>[${date}]  ${text || '未知消息'}</p>`,
 
     }
@@ -68,11 +68,11 @@ function formatTime() {
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 const hexCf = {
-    '7265626F6F74': 'reboot',
-    '73687574646F776E': 'shutdown',
-    '6C6F676F6666': 'logoff',
-    '736C656570': 'sleep',
-    '6465736B746F70': 'desktop'
+    '7265626f6f74': 'reboot',
+    '73687574646f776e': 'shutdown',
+    '6c6f676f6666': 'logoff',
+    '736c656570': 'sleep',
+    '6465736b746f70': 'desktop'
 }
 module.exports = {
     cardList,

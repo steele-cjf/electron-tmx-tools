@@ -1,5 +1,4 @@
 //渲染进程
-const { dialog, getCurrentWindow } = require('@electron/remote')
 const $ = require('jquery')
 const jQuery  = $ // 必须执行，bootstrap需要
 require('bootstrap')// 引入modal alert等js插件，当前使用的是v3版本
@@ -24,44 +23,42 @@ var Home = {
         var height = $('#textShow').prop("scrollHeight"); //等同 $('.out-box')[0].scrollHeight
         $('#textShow').scrollTop(height);
     },
-    dataListener(text, type) {
+    dataListener({key, text}, type) {
         let _this = this
-        _this.appendText(text, type)
-        var card = cardList.find((item) => item.key === text)
-        console.log(card)
-        switch (text) {
-            case 'back':
+        _this.appendText(text || key, type)
+        var card = cardList.find((item) => item.key === key)
+        switch (key) {
+            case 'desktop':
                 _this.windowCommond(card.command)
               break;
             case 'logoff':
             case 'reboot':
             case 'shutdown':
             case 'sleep':
-                _this.showModal(text)
+                _this.showModal(key)
               break;
             default:
               break;
         }
     },
+    // dataListener(command) {
+    //     let _this = this
+    //     var fn = _this.debounce(_this.windowCommondFn, sleepTime * 1000)
+    //     fn && fn(command)
+    // },
     // windows 电脑指令
     windowCommond(command) {
-        let _this = this
-        var result = exec('command',  { encoding: binaryEncoding }, function(err, stdout, stderr) {
-        if(err || stderr) {
-            var err =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
-            _this.showWarn('error', err)
-        }
+        var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
+            if(err || stderr) {
+                var title =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
+                Home.appendText(title || err, 400)
+                Home.showWarn('error', title || err)
+            }
         });
         result.stdin.end();
     },
     // 弹出warning
     showWarn(type, text) {
-        dialog.showMessageBox(getCurrentWindow(), {
-            type:'error',
-            title: `warning`,
-            message: text
-        })
-        return
         $('#alermContent').text(text)
         $('#alert').modal({
             keyboard: false,
@@ -80,23 +77,12 @@ var Home = {
     },
     eventInit() {
         let _this = this
+        // 测试点击事件
         $('#test').on('click', function() {
             var text = 'reboot'
-            var card = cardList.find((item) => item.key === text)
-
-            dialog.showMessageBox(getCurrentWindow(), {
-                type:'warning',
-                title: `${text} Countdown`,
-                message: `8 seconds later ${text}，Click the Cancel button to interrupt`,
-                buttons:['ok','cancel']
-            }).then((item) => {
-                if (item.response) {// cancel
-                } else {
-                    _this.windowCommond(card.command)
-                }
-            })
-            
+            _this.dataListener({text, key: text}, 1)
         })
+
          // command模态框弹出监听事件
         $('#commondModal').on('show.bs.modal', function (e) {
             clearTimeout(_this.timerObj)
@@ -107,16 +93,17 @@ var Home = {
             $('#secondShow').text(num)
             $('#myModalLabel').text(title)
             function timeLower() {
-            if(num > 0) {
-                _this.timerObj = setTimeout(() => {
-                num = num - 1
-                $('#secondShow').text(num)
-                timeLower()
-                }, 1000)
-            } else {
-                _this.windowCommond(card.command)
-                $('#commondModal').modal('hide')
-            }
+                if(num > 0) {
+                    _this.timerObj = setTimeout(() => {
+                        num = num - 1
+                        $('#secondShow').text(num)
+                        timeLower()
+                    }, 1000)
+                } else {
+                    clearTimeout(_this.timerObj)
+                    _this.windowCommond(card.command)
+                    $('#commondModal').modal('hide')
+                }
             }
             timeLower()
         })
@@ -124,6 +111,7 @@ var Home = {
         $('#okCommond').on('click', function() {
             var title = $('#modalIndex').val()
             var card = cardList.find((item) => item.key === title)
+            clearTimeout(_this.timerObj)
             _this.windowCommond(card.command)
             $('#commondModal').modal('hide')
         })
@@ -132,6 +120,17 @@ var Home = {
             clearTimeout(_this.timerObj)
             $('#commondModal').modal('hide')
         })
-    }
+    },
+    debounce(fn, delay) {
+        var timer
+        return function () {
+          var context = this
+          var args = arguments
+          clearTimeout(timer)
+          timer = setTimeout(function () {
+            fn.apply(context, args)
+          }, delay)
+        }
+      }
 }
 Home.init()

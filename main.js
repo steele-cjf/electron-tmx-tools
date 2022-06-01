@@ -1,7 +1,5 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Tray, Menu } = require('electron')
 const path = require('path')
-//主进程引入
-require('@electron/remote/main').initialize()
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 function createWindow() {
@@ -17,11 +15,45 @@ function createWindow() {
             preload: path.join(__dirname, './preload.js')
         }
     })
+    function initTrayIcon() { 
+      const tray = new Tray('./src/assets/img/thingsmatrix.ico');
+      const trayContextMenu = Menu.buildFromTemplate([
+          {
+              label: 'open',
+              click: () => {
+                winShow(mainWindow)
+              }
+          }, {
+              label: 'close',
+              click: () => {
+                app.quit()
+              }
+          }
+      ]);
+      tray.setToolTip('thingsmatrix');
+      tray.on('click', () => {
+          winShow(mainWindow)
+      });
+      tray.on('right-click', () => {
+          tray.popUpContextMenu(trayContextMenu);
+      });
+      function winShow(win) {
+          if (win.isVisible()) {
+              if (win.isMinimized()) {
+                  win.restore()
+                  win.focus()
+                } else {
+                    win.focus()
+                }
+            } else {
+                win.show()
+                win.setSkipTaskbar(false)
+            }
+        }
+  }
+  initTrayIcon()
     // and load the index.html of the app.
     mainWindow.loadFile('./src/index.html')
-    // 渲染进程使用弹窗
-    require('@electron/remote/main').enable(mainWindow.webContents)
-    
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
 }

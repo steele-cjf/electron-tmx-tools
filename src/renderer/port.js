@@ -26,14 +26,13 @@ var Port = {
         let _this = this
         p.open(function(openErr) {
             if(!openErr) {// 开启成功
+                if(!Port.checkConnect) {
+                    Home.dataListener({text: 'Connect success'})
+                    Port.checkConnect = true
+                    return
+                }
                 p.on('data', function(data) { // 监听读取
-                    // console.log('data', data)
                     Port.SerialPortCache = p
-                    if(!Port.checkConnect) {
-                        Home.dataListener('Connect '+ path + ' success', 1)
-                        Port.checkConnect = true
-                        return
-                    }
                     _this.formatData(data) // 格式化数据
                     
                 })
@@ -52,7 +51,6 @@ var Port = {
     // 写入指令
     sendCommand({command, p}, callback) {
         command = this.formatCommand(command)
-        console.log('command', command)
         if(!p) {
             p = Port.SerialPortCache
         }
@@ -72,6 +70,7 @@ var Port = {
     }, 
     formatData(data) {
         // 业务定制化处理
+        let _this = this
         let str = data.toString('hex').toLowerCase().split('7e')// Start(2)
         let s = str[str.length - 1].trim() // 防止重复返回7e
         if(s && s.length > 12) {
@@ -84,10 +83,14 @@ var Port = {
             payloadLen = s[7] + s[6];
             if (commandCf[controlCode] && commandCf[controlCode][commandId] === 'transparent') {
                 let len = parseInt(payloadLen, 16)
-                let result = s.slice(8, len)
+                let result = s.slice(8, 8 + len)
                 let key = result.join('')
-                console.log('Transparent data: ', result, hexCf[key])
-                Home.dataListener('Transparent data：'+ (hexCf[key] || key || 'no data'), 1)
+                let strEnd = _this.hextoString(result.join(''))
+                console.log(9999, strEnd)
+                Home.dataListener({
+                    text: 'Transparent data：'+ (strEnd || key || 'no data'),
+                    key: strEnd
+                }, 1)
             }
         }
     },
@@ -97,5 +100,15 @@ var Port = {
       var reg = new RegExp('[^\n]{1,'+length+'}','g')
       var res = str.match(reg)
       return res.join(' ')
+    },
+    hextoString (hex) {
+        var arr = hex.split("")
+        var out = ""
+        for (var i = 0; i < arr.length / 2; i++) {
+            var tmp = "0x" + arr[i * 2] + arr[i * 2 + 1]
+            var charValue = String.fromCharCode(tmp);
+            out += charValue
+        }
+        return out
     }
 }

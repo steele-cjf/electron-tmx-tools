@@ -73,3 +73,6 @@ body, html {
     font-size: 20px;
     padding: 30px 15px;
 }
+.error-content {
+    color: rgb(242, 10, 10, .6);
+}
