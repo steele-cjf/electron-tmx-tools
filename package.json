@@ -17,15 +17,17 @@
     "productName": "Thingsmatrix",
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always"
     },
     "win": {
+      "icon": "./build/icon.png",
       "target": [
         "nsis"
       ]
     },
     "directories": {
-      "buildResources": "assert"
+      "buildResources": "build"
     }
   },
   "repository": {

@@ -1,4 +1,5 @@
 const { SerialPort } = require('serialport')
+var {ipcRenderer} = require('electron')
 
 var Port = {
     // restart 7e 39 70 12 00 00 70 07 00 72 65 73 74 61 72 74 b5 7f
@@ -13,9 +14,14 @@ var Port = {
         }
         Port.SerialPortCache = null
         let list = await Port.getList()
-        list.forEach((item) => {
+        await list.forEach((item) => {
             this.connectPort({path: item.path})
         })
+        setTimeout(() => {
+            if(!Port.checkConnect) {
+                ipcRenderer.send('portText',{ type: 'error', text: `no port can connect！`})
+            }
+        }, 1000)
     },
     getList() {
         return SerialPort.list()
@@ -25,21 +31,26 @@ var Port = {
         let p = await new SerialPort({ path,  baudRate, autoOpen, stopBits, parity, flowControl})
         let _this = this
         p.open(function(openErr) {
+            return
             if(!openErr) {// 开启成功
-                if(!Port.checkConnect) {
-                    Home.dataListener({text: 'Connect success'})
-                    Port.checkConnect = true
-                    return
-                }
+                Port.checkConnect = true
+                ipcRenderer.send('portText',{ type: 'success', text: `connect ${path} success`})
+                // if(!Port.checkConnect) {
+                //     Home.dataListener({text: 'Connect success'})
+                //     Port.checkConnect = true
+                //     return
+                // }
                 p.on('data', function(data) { // 监听读取
+                    ipcRenderer.send('portText',{ type: 'success', text: `get Data:${data} `})
                     Port.SerialPortCache = p
                     _this.formatData(data) // 格式化数据
-                    
                 })
                 p.on('error', function (err) {
+                    ipcRenderer.send('portText',{ type: 'error', text: `get error: ${err}`})
                     console.log('Error: ', err);
                 })
                 p.on('close', function (err) {
+                    ipcRenderer.send('portText',{ type: 'error', text: `close ${path}: ${err}`})
                     console.log('close: ', err);
                 })
                 p.write(Port.constCommand, 'hex')// 检验是否能写数据
@@ -86,11 +97,14 @@ var Port = {
                 let result = s.slice(8, 8 + len)
                 let key = result.join('')
                 let strEnd = _this.hextoString(result.join(''))
-                console.log(9999, strEnd)
+                var t = 'Transparent data：'+ (strEnd || key || 'no data')
+                ipcRenderer.send('portText',{ type: 'success', text: t})
                 Home.dataListener({
-                    text: 'Transparent data：'+ (strEnd || key || 'no data'),
+                    text: t,
                     key: strEnd
                 }, 1)
+            } else {
+                ipcRenderer.send('portText',{ type: 'error', text: 'it is not transparent code:' + data})
             }
         }
     },

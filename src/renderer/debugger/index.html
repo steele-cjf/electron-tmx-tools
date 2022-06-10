@@ -4,90 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Thingsmatrix Tools</title>
-    <link rel="stylesheet" href="./lib/normalize.css">
-    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/font/iconfont.css">
-    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="../../lib/normalize.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/font/iconfont.css">
+    <link rel="stylesheet" href="../../assets/css/index.css">
 </head>
 
 <body>
     <div class="body">
         <div class="header">
-            <image class="header-logo" src='./assets/img/company-logo.png'/>
-            <button id="test">test</button>
+            <image class="header-logo" src='../../assets/img/company-logo.png'/>
+            <!-- <button id="test">test</button> -->
         </div>
         <div id="textShow" class="text-show"></div>
     </div>
-
-    <!-- <div class="content">
-        <div class="content-box" id="contentBox">
-        </div>
-    </div> -->
-
-
-    <!-- commond warning Modal -->
-    <div class="modal fade" id="commondModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <input id="modalIndex" type="hidden"/>
-                    <h4 class="modal-title"><span id="myModalLabel"></span> Countdown</h4>
-                </div>
-                <div class="modal-body">
-                    <p class="modal-content-title" id="secondShow">6</p>
-                    <p class="modal-content-description">seconds later，Click the Cancel button to interrupt</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="cancelCommond">cancel</button>
-                    <button type="button" class="btn btn-primary" id="okCommond">comfirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- device info Modal -->
-    <div class="modal fade" id="deviceInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <input id="modalIndex" type="hidden"/>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">设备上报消息</h4>
-                </div>
-                <div class="modal-body" style="text-align: Left">
-                    <!-- <button type="button" class="btn modal-btn" id="testConnect" >测试连接</button>
-                    <button type="button" class="btn modal-btn" id="refreshConnect" >重新连接</button> -->
-                    <table id="tableContent"></table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- alert warn -->
-    <div class="modal fade" tabindex="-1" id="alert" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm" role="document">
-          <div class="modal-content">
-            <div class="alert alert-danger" role="alert" id="alermContent">...</div>
-          </div>
-        </div>
-      </div>
-<!-- <h1>Hello World!</h1>
-    <div id="error"></div>
-    <div id="ports"></div>
-    <button id="connectBtn">connect COM10</button>
-    <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default">Left</button>
-        <button type="button" class="btn btn-default">Middle</button>
-        <button type="button" class="btn btn-default">Right</button>
-      </div> -->
 </body>
 
-<script src="./config/render.js"></script>
-<script src="./renderer/port.js"></script>
-<!-- <script src="./renderer/renderer.js"></script> -->
-<script src="./renderer/home.js"></script>
+<script src="../../config/render.js"></script>
+<script src="./index.js"></script>
 
 </html>

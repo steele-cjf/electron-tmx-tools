@@ -1,6 +1,6 @@
 //渲染进程
 const { screen, BrowserWindow } = require('@electron/remote')
-const {ipcRenderer} = require('electron')
+var {ipcRenderer} = require('electron')
 const $ = require('jquery')
 const path = require('path')
 

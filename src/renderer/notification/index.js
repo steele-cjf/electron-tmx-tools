@@ -44,12 +44,14 @@ var notification = {
     },
     // windows 电脑指令
     windowCommond(command) {
-        var result = exec('command',  { encoding: binaryEncoding }, function(err, stdout, stderr) {
+        console.log(9999, command)
+        return
+        var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
             if(err || stderr) {
                 var title =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
-                $('#contentBox').hide()
-                $('#errorBody').css('display', 'flex')
-                $('#erroBox').text(title || err)
+                // $('#contentBox').hide()
+                // $('#errorBody').css('display', 'flex')
+                // $('#erroBox').text(title || err)
                 setTimeout(() => {
                     getCurrentWindow().close()
                 }, 5000)

@@ -19,7 +19,7 @@ var Home = {
         let _this = this
         _this.appendText('welcome to thingsmatrix ')
         _this.eventInit()
-        Port.init()
+        // Port.init()
     },
     appendText(type, text) {
         var dom = getDomTel(type, text)
@@ -34,9 +34,6 @@ var Home = {
         var card = cardList.find((item) => item.key === key)
         switch (key) {
             case 'desktop':
-            //     Home.newWindow = true
-            //     _this.windowCommond(card.command)
-            //   break;
             case 'logoff':
             case 'reboot':
             case 'shutdown':

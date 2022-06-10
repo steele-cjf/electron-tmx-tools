@@ -6,7 +6,7 @@ const createWindowFn = function(htmlPath, preloadPath, {
     frame = false,
     resizable = false,
     movable = false,
-    alwaysOnTop = false,
+    alwaysOnTop = true,
     x,
     y,
     closeCallback,
