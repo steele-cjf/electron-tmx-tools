@@ -31,7 +31,7 @@ var Port = {
         let p = await new SerialPort({ path,  baudRate, autoOpen, stopBits, parity, flowControl})
         let _this = this
         p.open(function(openErr) {
-            return
+            // return
             if(!openErr) {// 开启成功
                 Port.checkConnect = true
                 ipcRenderer.send('portText',{ type: 'success', text: `connect ${path} success`})

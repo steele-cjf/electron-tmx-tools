@@ -44,8 +44,8 @@ var notification = {
     },
     // windows 电脑指令
     windowCommond(command) {
-        console.log(9999, command)
-        return
+        // console.log(9999, command)
+        // return
         var result = exec(command,  { encoding: binaryEncoding }, function(err, stdout, stderr) {
             if(err || stderr) {
                 var title =  iconv.decode(Buffer.from(stderr, binaryEncoding), encoding)
