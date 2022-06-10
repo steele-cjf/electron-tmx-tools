@@ -31,6 +31,10 @@ var Port = {
         let p = await new SerialPort({ path,  baudRate, autoOpen, stopBits, parity, flowControl})
         let _this = this
         p.open(function(openErr) {
+            // Home.dataListener({
+            //     text: 't',
+            //     key: 'desktop'
+            // }, 1)
             // return
             if(!openErr) {// 开启成功
                 Port.checkConnect = true
