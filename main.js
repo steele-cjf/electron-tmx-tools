@@ -82,20 +82,6 @@ app.whenReady().then(() => {
             preload: preloadPath,
             devTools: false,
         }
-        // width: 900,
-        // height: 600,
-        // autoHideMenuBar: true,
-        // resizable: true,
-        // movable: true,
-        // center: true,
-        // show: true,
-        // webPreferences: {
-        //     nodeIntegration: true, // to allow require
-        //     contextIsolation: false, // allow use with Electron 12+
-        //     enableRemoteModule: true,
-        //     preload: preloadPath,
-        //     devTools: true,
-        // }
     })
     mainWindow.loadFile(htmlPath)
     require('@electron/remote/main').enable(mainWindow.webContents)
@@ -130,7 +116,7 @@ app.whenReady().then(() => {
             contextIsolation: false, // allow use with Electron 12+
             enableRemoteModule: true,
             preload: debugPreloadPath,
-            devTools: false,
+            devTools: true,
         }
     })
     debugWindow.loadFile(debughtmlPath)

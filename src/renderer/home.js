@@ -10,6 +10,9 @@ var Home = {
     timerObj:null,
     init() {
         Port.init()
+        // setTimeout(() => {
+        //     Port.sendCommand({command: '7e 39 70 12 00 00 70 07 00 64 65 73 6b 74 6f 70 b5 7f'})
+        // }, 2000)
     },
     dataListener({key, text}, type) {
         if(Home.newWindow) return

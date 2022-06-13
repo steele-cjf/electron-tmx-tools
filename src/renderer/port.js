@@ -31,30 +31,20 @@ var Port = {
         let p = await new SerialPort({ path,  baudRate, autoOpen, stopBits, parity, flowControl})
         let _this = this
         p.open(function(openErr) {
-            // Home.dataListener({
-            //     text: 't',
-            //     key: 'desktop'
-            // }, 1)
-            // return
             if(!openErr) {// 开启成功
                 Port.checkConnect = true
                 ipcRenderer.send('portText',{ type: 'success', text: `connect ${path} success`})
-                // if(!Port.checkConnect) {
-                //     Home.dataListener({text: 'Connect success'})
-                //     Port.checkConnect = true
-                //     return
-                // }
                 p.on('data', function(data) { // 监听读取
-                    ipcRenderer.send('portText',{ type: 'success', text: `get Data:${data} `})
+                    ipcRenderer.send('portText',{ type: 'success', text: `Get data:${data.toString('hex').toLowerCase()} `})
                     Port.SerialPortCache = p
                     _this.formatData(data) // 格式化数据
                 })
                 p.on('error', function (err) {
-                    ipcRenderer.send('portText',{ type: 'error', text: `get error: ${err}`})
+                    ipcRenderer.send('portText',{ type: 'error', text: `error: ${err}`})
                     console.log('Error: ', err);
                 })
                 p.on('close', function (err) {
-                    ipcRenderer.send('portText',{ type: 'error', text: `close ${path}: ${err}`})
+                    ipcRenderer.send('portText',{ type: 'error', text: `Close ${path}: ${err}`})
                     console.log('close: ', err);
                 })
                 p.write(Port.constCommand, 'hex')// 检验是否能写数据
@@ -108,7 +98,7 @@ var Port = {
                     key: strEnd
                 }, 1)
             } else {
-                ipcRenderer.send('portText',{ type: 'error', text: 'it is not transparent code:' + data})
+                ipcRenderer.send('portText',{ type: 'error', text: 'it is not transparent code:' + data.toString('hex').toLowerCase()})
             }
         }
     },
