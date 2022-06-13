@@ -14,7 +14,7 @@ const cardList =[{
     description: '注销电脑',
     icon: 'icon-shuimian',
     key: 'logoff',
-    command: 'logoff'
+    command: 'shutdown /l'
 }, {
     title: '睡眠',
     description: '进入睡眠状态',

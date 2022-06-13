@@ -110,7 +110,7 @@ app.whenReady().then(() => {
         resizable: true,
         movable: true,
         center: true,
-        show: true,
+        show: false,
         webPreferences: {
             nodeIntegration: true, // to allow require
             contextIsolation: false, // allow use with Electron 12+
@@ -149,12 +149,12 @@ function initTrayIcon(mainWindow, debugWindow) {
                 mainWindow.show()
             }
         }, {
-            label: 'debug log',
-            click: () => {
-                debugWindow.setSkipTaskbar(false);
-                debugWindow.show()
-            }
-        }, {
+        //     label: 'debug log',
+        //     click: () => {
+        //         debugWindow.setSkipTaskbar(false);
+        //         debugWindow.show()
+        //     }
+        // }, {
             label: 'close',
             click: () => {
                 debugWindow.destroy()
