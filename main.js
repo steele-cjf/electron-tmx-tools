@@ -116,7 +116,7 @@ app.whenReady().then(() => {
             contextIsolation: false, // allow use with Electron 12+
             enableRemoteModule: true,
             preload: debugPreloadPath,
-            devTools: true,
+            devTools: false,
         }
     })
     debugWindow.loadFile(debughtmlPath)
