@@ -10,7 +10,7 @@
     <title>Thingsmatrix</title>
 </head>
 <body>
-    <div class="body-wrapper" id="contentBox">
+    <div class="body-wrapper" id="contentBox"  style="display: none;">
         <div class="box">
             <p class="title" id="secondShow">10</p>
             <p class="description">seconds later to execute <span id="command"></span></p>
@@ -29,7 +29,19 @@
             <button type="button" class="btn btn-primary" id="errorBtn">comfirm</button>
         </div>
     </div>
+
+    <div class="body-wrapper" id="notTransparent" style="display: none;">
+        <div class="box">
+            <p id="erroBox" class="description">origin code: <strong id="codeInfo"></strong></p>
+            <p id="erroBox" class="description">transparent code:<strong id="tranCode"></strong></p>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" id="transBtn">comfirm</button>
+        </div>
+    </div>
 </body>
+<script src="../../config/render.js"></script>
+
 <script src="./index.js"></script>
 
 </html>

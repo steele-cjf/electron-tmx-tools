@@ -85,7 +85,9 @@ var Port = {
             controlCode = s[1],
             dataLength = s[3] + s[2],
             commandId = s[5] + s[4],
-            payloadLen = s[7] + s[6];
+            payloadLen = s[7] + s[6],
+            message = startCode + ' ' + s.join(' ')
+
             if (commandCf[controlCode] && commandCf[controlCode][commandId] === 'transparent') {
                 let len = parseInt(payloadLen, 16)
                 let result = s.slice(8, 8 + len)
@@ -95,10 +97,11 @@ var Port = {
                 ipcRenderer.send('portText',{ type: 'success', text: t})
                 Home.dataListener({
                     text: t,
-                    key: strEnd
-                }, 1)
+                    key: strEnd,
+                    message
+                })
             } else {
-                ipcRenderer.send('portText',{ type: 'error', text: 'it is not transparent code:' + data.toString('hex').toLowerCase()})
+                ipcRenderer.send('portText',{ type: 'error', text: 'it is not transparent code:' + message})
             }
         }
     },

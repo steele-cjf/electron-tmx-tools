@@ -13,13 +13,29 @@ var notification = {
     timerObj: null,
     init() {
         ipcRenderer.on('replyChildToMain', function(event, arg) {
-            notification.initEvent(arg)
             if (!arg) return
-            notification.timeLower(arg)
+            let {key, message} = arg
+            var card = cardList.find((item) => item.key === key)
+            notification.initEvent(card)
+            switch (key) {
+                case 'desktop':
+                case 'logoff':
+                case 'reboot':
+                case 'shutdown':
+                case 'sleep':
+                    $('#contentBox').css('display', 'flex')
+                    notification.timeLower(card)
+                    break;
+                default:
+                    $('#codeInfo').text(message)
+                    $('#tranCode').text(key)
+                    $('#notTransparent').css('display', 'flex')
+                    break;
+            }
         })
     },
     initEvent(card) {
-        $('#cacelBtn, #errorBtn').on('click', function(e) {
+        $('#cacelBtn, #errorBtn, #transBtn').on('click', function(e) {
             getCurrentWindow().close()
         })
         $('#okBtn').on('click', function(e) {
