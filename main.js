@@ -149,12 +149,12 @@ function initTrayIcon(mainWindow, debugWindow) {
                 mainWindow.show()
             }
         }, {
-        //     label: 'debug log',
-        //     click: () => {
-        //         debugWindow.setSkipTaskbar(false);
-        //         debugWindow.show()
-        //     }
-        // }, {
+            label: 'debug log',
+            click: () => {
+                debugWindow.setSkipTaskbar(false);
+                debugWindow.show()
+            }
+        }, {
             label: 'close',
             click: () => {
                 debugWindow.destroy()
